@@ -8,7 +8,7 @@ export default function EventCard({ ev, delay = 0 }: { ev: Event; delay?: number
       style={{ animationDelay: `${delay}ms` }}
     >
       {/* image / hero */}
-      <div className="h-36 bg-gradient-to-br from-[#3d1a00] to-[#6b2d00] flex items-center justify-center relative overflow-hidden">
+      <div className="h-36 flex items-center justify-center relative overflow-hidden" style={{background:'linear-gradient(135deg,#1a4a2a,#2d6a3f)'}}>
         <div className="absolute inset-0 opacity-10"
           style={{ backgroundImage: 'repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(200,151,58,.3) 20px,rgba(200,151,58,.3) 22px)' }} />
         <span className="text-5xl relative z-10">{ev.emoji}</span>

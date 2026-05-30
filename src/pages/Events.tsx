@@ -23,13 +23,19 @@ export default function Events() {
 
   return (
     <div>
-      {/* hero */}
-      <div className="relative bg-gradient-to-br from-[#3d1a00] via-[#6b2d00] to-[#4a1500] text-center py-6 px-4 overflow-hidden">
-        <div className="absolute inset-0 opacity-10"
-          style={{ backgroundImage: 'repeating-linear-gradient(45deg,transparent,transparent 24px,rgba(200,151,58,.4) 24px,rgba(200,151,58,.4) 26px)' }}/>
-        <h2 className="font-['Cormorant_Garamond'] text-[22px] font-bold text-amber-200 relative">🗓️ Sự Kiện & Thông Báo</h2>
-        <div className="w-16 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto my-2.5"/>
-        <p className="text-[12px] text-amber-200/70 italic relative">Lịch lễ hội, khóa tu và hoạt động tại chùa</p>
+      {/* hero banner */}
+      <div className="relative overflow-hidden" style={{background:'#1a4a2a'}}>
+        <img
+          src="/thuan-chau-pagoda/banner.png"
+          alt="Chùa Thuận Châu"
+          className="w-full object-cover"
+          style={{maxHeight:'180px', objectPosition:'center'}}
+        />
+        <div className="absolute inset-0" style={{background:'linear-gradient(to top, rgba(26,74,42,0.7) 0%, transparent 60%)'}}/>
+        <div className="absolute bottom-0 left-0 right-0 text-center pb-3 px-4">
+          <div className="w-16 h-px mx-auto mb-2" style={{background:'linear-gradient(90deg,transparent,#c8973a,transparent)'}}/>
+          <p className="text-[12px] italic" style={{color:'rgba(232,201,122,0.85)'}}>Lịch lễ hội, khóa tu và hoạt động tại chùa</p>
+        </div>
       </div>
 
       {/* install prompt */}

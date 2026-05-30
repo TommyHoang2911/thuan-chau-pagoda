@@ -59,7 +59,7 @@ export default function CauSieu() {
   return (
     <div ref={topRef}>
       {/* hero */}
-      <div className="relative bg-gradient-to-br from-[#3d1a00] via-[#6b2d00] to-[#4a1500] text-center py-6 px-4 overflow-hidden">
+      <div className="relative bg-gradient-to-br from-[#1a4a2a] via-[#2d6a3f] to-[#1a4a2a] text-center py-6 px-4 overflow-hidden">
         <div className="absolute inset-0 opacity-10"
           style={{ backgroundImage:'repeating-linear-gradient(45deg,transparent,transparent 24px,rgba(200,151,58,.4) 24px,rgba(200,151,58,.4) 26px)' }}/>
         <h2 className="font-['Cormorant_Garamond'] text-[22px] font-bold text-amber-200 relative">🕯️ Đăng Ký Cầu Siêu</h2>
