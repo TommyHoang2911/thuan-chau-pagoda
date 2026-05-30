@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 interface Msg {
   role: 'bot' | 'user'
   text?: string
-  card?: 'welcome'   // special welcome card
+  card?: 'welcome'
   time: string
 }
 interface Step { msg: string; options: string[]; action?: string }
@@ -56,19 +56,12 @@ const nowTime = () => new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', 
 
 interface Props { onNavigate: (tab: string) => void }
 
-// ── Welcome Card — tin nhắn chào đầu tiên ─────────────────
 function WelcomeCard() {
   return (
     <div className="rounded-2xl overflow-hidden shadow-sm"
       style={{ border: '1px solid #e8e8e8', background: '#fff', maxWidth: 260 }}>
-      {/* banner */}
-      <img
-        src="/thuan-chau-pagoda/banner.png"
-        alt="Chùa Thuận Châu"
-        className="w-full object-cover"
-        style={{ height: 110 }}
-      />
-      {/* info */}
+      <img src="/thuan-chau-pagoda/banner.png" alt="Chùa Thuận Châu"
+        className="w-full object-cover" style={{ height: 110 }}/>
       <div className="p-3">
         <div className="flex items-center gap-2 mb-2">
           <img src="/thuan-chau-pagoda/logo.png" alt=""
@@ -87,11 +80,11 @@ function WelcomeCard() {
         <div className="mt-2.5 pt-2.5 border-t border-stone-100 flex gap-2">
           <a href="https://maps.google.com/?q=220+Đống+Đa,+Hải+Châu,+Đà+Nẵng"
             target="_blank" rel="noreferrer"
-            className="flex-1 text-center text-[11.5px] font-semibold py-1.5 rounded-lg transition"
+            className="flex-1 text-center text-[11.5px] font-semibold py-1.5 rounded-lg"
             style={{ color: '#1a4a2a', background: '#e8f5e9' }}>
             🗺️ Bản đồ
           </a>
-          <button className="flex-1 text-[11.5px] font-semibold py-1.5 rounded-lg transition"
+          <button className="flex-1 text-[11.5px] font-semibold py-1.5 rounded-lg"
             style={{ color: '#fff', background: '#1a4a2a' }}>
             📞 Liên hệ
           </button>
@@ -131,22 +124,16 @@ export default function Chat({ onNavigate }: Props) {
     }, 800)
   }
 
-  // Khởi tạo: welcome card → sau đó greeting
   useEffect(() => {
     if (initialized.current) return
     initialized.current = true
-
-    // 1. Welcome card ngay lập tức
     setMsgs([{ role: 'bot', card: 'welcome', time: nowTime() }])
-
-    // 2. Typing → greeting text
     setTimeout(() => {
       setTyping(true)
       scrollBottom()
       setTimeout(() => {
         setTyping(false)
-        const t = nowTime()
-        setMsgs(m => [...m, { role: 'bot', text: FLOW.start.msg, time: t }])
+        setMsgs(m => [...m, { role: 'bot', text: FLOW.start.msg, time: nowTime() }])
         setOptions(FLOW.start.options)
         scrollBottom()
       }, 1000)
@@ -159,13 +146,20 @@ export default function Chat({ onNavigate }: Props) {
     setTimeout(() => runStep(opt), 400)
   }
 
+  const BotAvatar = () => (
+    <img src="/thuan-chau-pagoda/logo.png" alt=""
+      className="w-7 h-7 rounded-full object-cover flex-shrink-0 self-end mb-0.5"
+      style={{ border: '1.5px solid #c8973a' }}/>
+  )
+
   return (
-    <div className="flex flex-col h-full" style={{ background: '#f0f2f5' }}>
+    <div className="flex flex-col" style={{ height: '100%', background: '#f0f2f5' }}>
 
-      {/* ── Messages ──────────────────────────────────── */}
-      <div className="flex-1 overflow-y-auto px-3 py-3 flex flex-col gap-2"
-        style={{ overscrollBehavior: 'contain' }}>
-
+      {/* ── Messages — chiếm toàn bộ không gian còn lại ── */}
+      <div
+        className="flex-1 overflow-y-auto px-3 py-3 flex flex-col gap-2"
+        style={{ overscrollBehavior: 'contain', minHeight: 0 }}
+      >
         {/* date divider */}
         <div className="flex items-center gap-2 my-1">
           <div className="flex-1 h-px bg-stone-200"/>
@@ -177,32 +171,27 @@ export default function Chat({ onNavigate }: Props) {
 
         {msgs.map((m, i) => (
           <div key={i} className={`flex gap-2 ${m.role === 'user' ? 'justify-end' : 'items-end'}`}>
-
-            {/* bot avatar */}
-            {m.role === 'bot' && (
-              <img src="/thuan-chau-pagoda/logo.png" alt=""
-                className="w-7 h-7 rounded-full object-cover flex-shrink-0 self-end mb-0.5"
-                style={{ border: '1.5px solid #c8973a' }}/>
-            )}
-
-            <div className={`flex flex-col gap-0.5 ${m.role === 'user' ? 'items-end' : 'items-start'}`}
-              style={{ maxWidth: '78%' }}>
-
-              {/* welcome card */}
+            {m.role === 'bot' && <BotAvatar />}
+            <div
+              className={`flex flex-col gap-0.5 ${m.role === 'user' ? 'items-end' : 'items-start'}`}
+              style={{ maxWidth: '78%' }}
+            >
               {m.card === 'welcome' && <WelcomeCard />}
-
-              {/* text bubble */}
               {m.text && (
-                <div className={`px-3 py-2 text-[14px] leading-relaxed whitespace-pre-line ${
-                  m.role === 'bot'
-                    ? 'rounded-2xl rounded-bl-sm bg-white text-stone-800 shadow-sm'
-                    : 'rounded-2xl rounded-br-sm text-white'
-                }`}
-                style={m.role === 'user' ? { background: '#1a4a2a' } : { border: '1px solid #ebebeb' }}>
+                <div
+                  className={`px-3 py-2 text-[14px] leading-relaxed whitespace-pre-line ${
+                    m.role === 'bot'
+                      ? 'rounded-2xl rounded-bl-sm bg-white text-stone-800 shadow-sm'
+                      : 'rounded-2xl rounded-br-sm text-white'
+                  }`}
+                  style={m.role === 'user'
+                    ? { background: '#1a4a2a' }
+                    : { border: '1px solid #ebebeb' }
+                  }
+                >
                   {m.text}
                 </div>
               )}
-
               <span className="text-[10px] text-stone-400 px-0.5">{m.time}</span>
             </div>
           </div>
@@ -211,9 +200,7 @@ export default function Chat({ onNavigate }: Props) {
         {/* typing dots */}
         {typing && (
           <div className="flex gap-2 items-end">
-            <img src="/thuan-chau-pagoda/logo.png" alt=""
-              className="w-7 h-7 rounded-full object-cover flex-shrink-0"
-              style={{ border: '1.5px solid #c8973a' }}/>
+            <BotAvatar />
             <div className="bg-white rounded-2xl rounded-bl-sm px-4 py-3 shadow-sm flex gap-1.5 items-center"
               style={{ border: '1px solid #ebebeb' }}>
               {[0,1,2].map(i => (
@@ -227,19 +214,30 @@ export default function Chat({ onNavigate }: Props) {
         <div ref={bottomRef}/>
       </div>
 
-      {/* ── Quick reply options ────────────────────────── */}
+      {/* ── Quick reply — cố định ở dưới, scroll ngang nếu nhiều ── */}
       {options.length > 0 && (
-        <div className="flex-shrink-0 bg-white"
-          style={{ borderTop: '1px solid #e8e8e8' }}>
-          <div className="flex flex-wrap gap-2 px-3 py-2.5">
+        <div
+          className="flex-shrink-0 bg-white"
+          style={{ borderTop: '1px solid #e8e8e8' }}
+        >
+          {/* Scroll ngang khi nhiều options — không wrap sang dòng mới */}
+          <div
+            className="flex gap-2 px-3 py-2.5 overflow-x-auto"
+            style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
+          >
             {options.map(o => (
-              <button key={o} onClick={() => pick(o)}
-                className="px-3.5 py-1.5 rounded-full text-[13px] font-medium transition active:scale-95"
+              <button
+                key={o}
+                onClick={() => pick(o)}
+                className="flex-shrink-0 px-3.5 py-1.5 rounded-full text-[13px] font-medium
+                  transition-all active:scale-95 active:bg-[#1a4a2a] active:text-white"
                 style={{
                   border: '1.5px solid #1a4a2a',
                   color: '#1a4a2a',
                   background: '#fff',
-                }}>
+                  whiteSpace: 'nowrap',
+                }}
+              >
                 {o}
               </button>
             ))}
