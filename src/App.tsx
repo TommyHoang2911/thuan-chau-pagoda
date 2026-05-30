@@ -31,38 +31,50 @@ export default function App() {
   }
 
   return (
-    // Dùng h-full thay 100dvh — #root đã có height: -webkit-fill-available từ CSS
-    <div className="flex flex-col h-full" style={{ background: '#f0f2f5' }}>
-
+    // #root đã là position:fixed + safe area từ CSS
+    // App chỉ cần flex-col flex-1 — không cần height ở đây
+    <>
       <Header onNotif={handleNotif} activeTab={tab} />
 
-      <main className="flex-1 overflow-hidden relative">
-
+      {/* Main: flex-1 để lấp đầy khoảng giữa header và nav */}
+      <main
+        className="flex-1 overflow-hidden relative"
+        style={{ background: '#f0f2f5' }}
+      >
+        {/* Chat */}
         <div className={`absolute inset-0 flex flex-col ${tab === 'chat' ? '' : 'hidden'}`}>
           <Chat onNavigate={t => changeTab(t as TabId)} />
         </div>
 
-        <div id="panel-events"
+        {/* Events */}
+        <div
+          id="panel-events"
           className={`absolute inset-0 overflow-y-auto ${tab === 'events' ? '' : 'hidden'}`}
-          style={{ background: '#f5f5f5', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}>
-          <div className="pb-4 animate-[fadeUp_.2s_ease]"><Events /></div>
+          style={{ background: '#f5f5f5', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
+        >
+          <div className="pb-6 animate-[fadeUp_.2s_ease]"><Events /></div>
         </div>
 
-        <div id="panel-causieu"
+        {/* Cầu siêu */}
+        <div
+          id="panel-causieu"
           className={`absolute inset-0 overflow-y-auto ${tab === 'causieu' ? '' : 'hidden'}`}
-          style={{ background: '#f5f5f5', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}>
-          <div className="pb-4 animate-[fadeUp_.2s_ease]"><CauSieu /></div>
+          style={{ background: '#f5f5f5', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
+        >
+          <div className="pb-6 animate-[fadeUp_.2s_ease]"><CauSieu /></div>
         </div>
 
-        <div id="panel-about"
+        {/* About */}
+        <div
+          id="panel-about"
           className={`absolute inset-0 overflow-y-auto ${tab === 'about' ? '' : 'hidden'}`}
-          style={{ background: '#f5f5f5', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}>
-          <div className="pb-4 animate-[fadeUp_.2s_ease]"><About /></div>
+          style={{ background: '#f5f5f5', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
+        >
+          <div className="pb-6 animate-[fadeUp_.2s_ease]"><About /></div>
         </div>
-
       </main>
 
       <BottomNav active={tab} onChange={changeTab} />
-    </div>
+    </>
   )
 }

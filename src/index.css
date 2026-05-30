@@ -15,34 +15,42 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-html, body, #root {
+* { -webkit-tap-highlight-color: transparent; }
+
+/* ── Safari iOS height fix ────────────────────────────────
+   Safari browser có address bar động làm 100vh / 100dvh / 100%
+   tất cả đều bị tính sai. Giải pháp dứt điểm: position fixed
+   cho app shell, tính top/bottom từ safe-area.
+   ─────────────────────────────────────────────────────── */
+
+html, body {
   height: 100%;
+  overflow: hidden;
+  /* Ngăn Safari bounce scroll làm lộ nền trắng */
+  overscroll-behavior: none;
+  background: #1a4a2a;
+}
+
+#root {
+  /* Fixed = không bị ảnh hưởng bởi Safari address bar */
+  position: fixed;
+  inset: 0;
+  /* Respect safe areas cho notch + home indicator */
+  top:    env(safe-area-inset-top,    0px);
+  bottom: env(safe-area-inset-bottom, 0px);
+  left:   env(safe-area-inset-left,   0px);
+  right:  env(safe-area-inset-right,  0px);
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
 
-* { -webkit-tap-highlight-color: transparent; }
-
-/* ── iOS Safe Area Fix ─────────────────────────────────── */
-/* Phải dùng CSS, không dùng inline style — Safari iOS yêu cầu */
-
-/* Root app height: dùng -webkit-fill-available cho Safari */
-#root {
-  height: 100%;
-  height: -webkit-fill-available;
-}
-
-html {
-  height: -webkit-fill-available;
-}
-
-/* Bottom nav: padding đúng cho iPhone home indicator */
+/* Nav bar: KHÔNG cần padding-bottom nữa vì #root đã tính bottom safe area */
 .bottom-nav-safe {
-  padding-bottom: env(safe-area-inset-bottom);
-  padding-bottom: max(env(safe-area-inset-bottom), 0px);
+  flex-shrink: 0;
 }
 
-/* Top header: padding cho notch / dynamic island */
+/* Header: KHÔNG cần padding-top nữa vì #root đã tính top safe area */
 .header-safe {
-  padding-top: env(safe-area-inset-top);
-  padding-top: max(env(safe-area-inset-top), 0px);
+  flex-shrink: 0;
 }
