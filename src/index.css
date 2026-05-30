@@ -28,29 +28,31 @@ html, body {
   overflow: hidden;
   /* Ngăn Safari bounce scroll làm lộ nền trắng */
   overscroll-behavior: none;
-  background: #1a4a2a;
+  background: #ffffff; /* trắng để home indicator area không bị xanh */
 }
 
 #root {
-  /* Fixed = không bị ảnh hưởng bởi Safari address bar */
   position: fixed;
   inset: 0;
-  /* Respect safe areas cho notch + home indicator */
-  top:    env(safe-area-inset-top,    0px);
-  bottom: env(safe-area-inset-bottom, 0px);
-  left:   env(safe-area-inset-left,   0px);
-  right:  env(safe-area-inset-right,  0px);
+  /* Chỉ top cần safe-area (notch/Dynamic Island)
+     Bottom = 0 để nav bar kéo sát đáy màn hình
+     Nav tự handle padding bottom bên trong */
+  top:   env(safe-area-inset-top,  0px);
+  left:  env(safe-area-inset-left, 0px);
+  right: env(safe-area-inset-right, 0px);
+  bottom: 0;
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
 
-/* Nav bar: KHÔNG cần padding-bottom nữa vì #root đã tính bottom safe area */
+/* Nav bar tự padding xuống home indicator */
 .bottom-nav-safe {
-  flex-shrink: 0;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background: #ffffff;
 }
 
-/* Header: KHÔNG cần padding-top nữa vì #root đã tính top safe area */
+/* Header: KHÔNG cần padding-top vì #root đã tính top safe area */
 .header-safe {
   flex-shrink: 0;
 }
