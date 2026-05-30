@@ -1,0 +1,7 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { useState } from 'react';
+export default function Header({ onNotif }) {
+    const [notifOn, setNotifOn] = useState(false);
+    const handleNotif = () => { setNotifOn(true); onNotif(); };
+    return (_jsxs("header", { className: "sticky top-0 z-50 flex-shrink-0 bg-gradient-to-r from-[#3d1a00] to-[#6b2d00] text-amber-200 shadow-lg", style: { paddingTop: 'env(safe-area-inset-top, 0px)' }, children: [_jsxs("div", { className: "flex items-center justify-between px-4 py-3", children: [_jsxs("div", { className: "flex items-center gap-3", children: [_jsx("span", { className: "text-3xl animate-[float_5s_ease-in-out_infinite]", children: "\u2638" }), _jsxs("div", { children: [_jsx("h1", { className: "font-['Cormorant_Garamond'] text-[17px] font-bold tracking-wide leading-tight", children: "Ch\u00F9a Thu\u1EADn Ch\u00E2u" }), _jsx("p", { className: "text-[10.5px] text-amber-200/60 italic mt-0.5", children: "220 \u0110\u1ED1ng \u0110a, H\u1EA3i Ch\u00E2u, \u0110\u00E0 N\u1EB5ng" })] })] }), _jsxs("button", { onClick: handleNotif, className: "relative w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 transition flex items-center justify-center text-lg", children: ["\uD83D\uDD14", notifOn && (_jsx("span", { className: "absolute top-1 right-1 w-2 h-2 rounded-full bg-orange-500 border-2 border-[#3d1a00]" }))] })] }), _jsx("div", { className: "h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent" })] }));
+}

@@ -13,3 +13,8 @@ Thumbs.db
 # Editor
 .vscode/
 .idea/
+node_modules/
+dist/
+.env
+.env.local
+tsconfig.tsbuildinfo

@@ -1,0 +1,38 @@
+{
+  "name": "pagoda-react",
+  "version": "1.0.0",
+  "description": "🌐 **Live:** https://tommyhoang2911.github.io/thuan-chau-pagoda/   🔧 **Admin:** https://tommyhoang2911.github.io/thuan-chau-pagoda/admin.html",
+  "main": "firebase-config.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TommyHoang2911/thuan-chau-pagoda.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TommyHoang2911/thuan-chau-pagoda/issues"
+  },
+  "homepage": "https://github.com/TommyHoang2911/thuan-chau-pagoda#readme",
+  "dependencies": {
+    "firebase": "^12.14.0",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.0",
+    "@types/react": "^19.2.15",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.2",
+    "autoprefixer": "^10.5.0",
+    "tailwindcss": "^4.3.0",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.14"
+  },
+  "type": "module"
+}
