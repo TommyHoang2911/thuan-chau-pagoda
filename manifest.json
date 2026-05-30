@@ -1,0 +1,20 @@
+{
+  "name": "Chùa Thuận Châu – Đà Nẵng",
+  "short_name": "Chùa Thuận Châu",
+  "description": "Thông báo sự kiện và đăng ký cầu siêu tại Chùa Thuận Châu, 220 Đống Đa, Hải Châu, Đà Nẵng",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#3d1a00",
+  "background_color": "#fdf6e8",
+  "lang": "vi",
+  "categories": ["religion", "lifestyle"],
+  "icons": [
+    { "src": "icon-96.png",  "sizes": "96x96",   "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "screenshots": [
+    { "src": "screenshot-mobile.png", "sizes": "390x844", "type": "image/png", "form_factor": "narrow" }
+  ]
+}
