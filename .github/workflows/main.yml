@@ -1,0 +1,10 @@
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run a script using the secret
+        env:
+          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+        run: |
+          echo "Executing command with token..."
+          # GitHub will automatically mask this value with asterisks (***) in the logs
