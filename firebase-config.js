@@ -13,13 +13,13 @@ import { getMessaging,
          getToken, onMessage }  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging.js";
 
 const firebaseConfig = {
-  apiKey:            "YOUR_API_KEY",
-  authDomain:        "chua-thuan-chau.firebaseapp.com",
-  projectId:         "chua-thuan-chau",
-  storageBucket:     "chua-thuan-chau.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId:             "YOUR_APP_ID",
-  measurementId:     "YOUR_MEASUREMENT_ID"
+  apiKey: "AIzaSyAJjxrUWZfgsRNrojxDL63UN8AGO6MiOJc",
+  authDomain: "thuan-chau.firebaseapp.com",
+  projectId: "thuan-chau",
+  storageBucket: "thuan-chau.firebasestorage.app",
+  messagingSenderId: "262992171979",
+  appId: "1:262992171979:web:485f8d0a13dee49efcdc4e",
+  measurementId: "G-6VPBMC8P3N"
 };
 
 const app       = initializeApp(firebaseConfig);
