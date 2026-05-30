@@ -21,3 +21,25 @@ export interface CauSieuForm {
 }
 
 export type TabId = 'events' | 'causieu' | 'chat' | 'about'
+
+// ── Admin types ───────────────────────────────────────────
+export interface CauSieuRecord {
+  id: string
+  name: string
+  phone: string
+  ceremony: string
+  names: string[]
+  relation: string
+  note: string
+  status: 'pending' | 'done'
+  createdAt: { seconds: number } | null
+}
+
+export interface PushNotif {
+  id: string
+  title: string
+  body: string
+  url?: string
+  sentAt: { seconds: number } | null
+  sentBy: string
+}
