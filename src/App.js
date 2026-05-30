@@ -2,6 +2,7 @@ import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-run
 import { useState } from 'react';
 import Header from './components/Header';
 import BottomNav from './components/BottomNav';
+import { requestPushPermission, onForegroundMessage } from './lib/firebase';
 import Events from './pages/Events';
 import CauSieu from './pages/CauSieu';
 import Chat from './pages/Chat';
@@ -9,16 +10,21 @@ import About from './pages/About';
 export default function App() {
     const [tab, setTab] = useState('chat');
     const handleNotif = async () => {
-        if (!('Notification' in window))
-            return;
-        const perm = await Notification.requestPermission();
-        if (perm === 'granted') {
+        const token = await requestPushPermission();
+        if (token) {
             new Notification('Chùa Thuận Châu 🙏', {
-                body: 'Bạn sẽ nhận thông báo sự kiện từ chùa.',
+                body: 'Đã bật thông báo. Bạn sẽ nhận tin từ chùa!',
                 icon: '/thuan-chau-pagoda/icon-192.png',
             });
         }
     };
+    // Foreground push → hiện native notification
+    onForegroundMessage((payload) => {
+        const p = payload;
+        const title = p?.notification?.title ?? 'Chùa Thuận Châu';
+        const body = p?.notification?.body ?? 'Có thông báo mới từ chùa.';
+        new Notification(title, { body, icon: '/thuan-chau-pagoda/icon-192.png' });
+    });
     const changeTab = (t) => {
         setTab(t);
         if (t !== 'chat') {
