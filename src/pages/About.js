@@ -13,5 +13,5 @@ export default function About() {
                                     { ico: '🗓️', text: 'Tab Sự Kiện — xem lịch lễ, khóa tu sắp tới' },
                                     { ico: '🕯️', text: 'Tab Cầu Siêu — gửi danh sách hương linh' },
                                     { ico: '💬', text: 'Tab Hỏi Đáp — trợ lý tự động giải đáp' },
-                                ].map(r => (_jsxs("div", { className: "flex gap-3 items-center pb-3 border-b border-dashed border-amber-100 last:border-none last:pb-0", children: [_jsx("span", { className: "text-xl", children: r.ico }), _jsx("p", { className: "text-[13.5px] text-stone-600", children: r.text })] }, r.ico))) })] }), _jsx("p", { className: "text-center text-[12px] text-stone-400 italic py-2", children: "\u2638 Nam m\u00F4 B\u1ED5n S\u01B0 Th\u00EDch Ca M\u00E2u Ni Ph\u1EADt \u2638" })] })] }));
+                                ].map(r => (_jsxs("div", { className: "flex gap-3 items-center pb-3 border-b border-dashed border-amber-100 last:border-none last:pb-0", children: [_jsx("span", { className: "text-xl", children: r.ico }), _jsx("p", { className: "text-[13.5px] text-stone-600", children: r.text })] }, r.ico))) })] }), _jsx("p", { className: "text-center text-[12px] text-stone-400 italic py-4 pb-6", children: "\u2638 Nam m\u00F4 B\u1ED5n S\u01B0 Th\u00EDch Ca M\u00E2u Ni Ph\u1EADt \u2638" })] })] }));
 }

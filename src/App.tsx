@@ -21,19 +21,58 @@ export default function App() {
     }
   }
 
+  const changeTab = (t: TabId) => {
+    setTab(t)
+    // scroll về đầu cho các tab cuộn dọc
+    if (t !== 'chat') {
+      setTimeout(() => {
+        document.getElementById('main-scroll')?.scrollTo({ top: 0, behavior: 'smooth' })
+      }, 50)
+    }
+  }
+
   return (
-    <div className="flex flex-col h-screen bg-amber-50 overflow-hidden">
+    <div className="flex flex-col bg-amber-50"
+      style={{ height: '100dvh' }}>   {/* dvh = dynamic viewport height — tránh bị che bởi browser UI */}
+
       <Header onNotif={handleNotif} />
 
-      <main className="flex-1 overflow-y-auto overflow-x-hidden scroll-smooth"
-        style={{ WebkitOverflowScrolling: 'touch' } as React.CSSProperties}>
-        <div className={tab === 'events'  ? 'block animate-[fadeUp_.25s_ease]' : 'hidden'}><Events /></div>
-        <div className={tab === 'causieu' ? 'block animate-[fadeUp_.25s_ease]' : 'hidden'}><CauSieu /></div>
-        <div className={tab === 'chat'    ? 'flex flex-col h-full animate-[fadeUp_.25s_ease]' : 'hidden'}><Chat onNavigate={t => setTab(t as TabId)} /></div>
-        <div className={tab === 'about'   ? 'block animate-[fadeUp_.25s_ease]' : 'hidden'}><About /></div>
+      {/* main scroll area — pb đủ để content không bị nav che */}
+      <main
+        id="main-scroll"
+        className="flex-1 overflow-hidden relative"
+      >
+        {/* ── Scrollable tabs (events, causieu, about) ── */}
+        <div className={`absolute inset-0 overflow-y-auto overflow-x-hidden ${tab === 'events' ? 'block' : 'hidden'}`}
+          style={{ WebkitOverflowScrolling: 'touch' } as React.CSSProperties}>
+          <div className="animate-[fadeUp_.25s_ease] pb-4">
+            <Events />
+          </div>
+        </div>
+
+        <div className={`absolute inset-0 overflow-y-auto overflow-x-hidden ${tab === 'causieu' ? 'block' : 'hidden'}`}
+          style={{ WebkitOverflowScrolling: 'touch' } as React.CSSProperties}>
+          <div className="animate-[fadeUp_.25s_ease] pb-4">
+            <CauSieu />
+          </div>
+        </div>
+
+        {/* ── Chat: không cuộn ngoài, tự quản lý height bên trong ── */}
+        <div className={`absolute inset-0 flex flex-col ${tab === 'chat' ? 'flex' : 'hidden'}`}>
+          <div className="animate-[fadeUp_.25s_ease] flex flex-col flex-1 overflow-hidden">
+            <Chat onNavigate={t => changeTab(t as TabId)} />
+          </div>
+        </div>
+
+        <div className={`absolute inset-0 overflow-y-auto overflow-x-hidden ${tab === 'about' ? 'block' : 'hidden'}`}
+          style={{ WebkitOverflowScrolling: 'touch' } as React.CSSProperties}>
+          <div className="animate-[fadeUp_.25s_ease] pb-4">
+            <About />
+          </div>
+        </div>
       </main>
 
-      <BottomNav active={tab} onChange={t => { setTab(t); window.scrollTo(0,0) }} />
+      <BottomNav active={tab} onChange={changeTab} />
     </div>
   )
 }

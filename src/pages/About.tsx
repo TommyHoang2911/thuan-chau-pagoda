@@ -81,7 +81,7 @@ export default function About() {
           </div>
         </div>
 
-        <p className="text-center text-[12px] text-stone-400 italic py-2">
+        <p className="text-center text-[12px] text-stone-400 italic py-4 pb-6">
           ☸ Nam mô Bổn Sư Thích Ca Mâu Ni Phật ☸
         </p>
       </div>

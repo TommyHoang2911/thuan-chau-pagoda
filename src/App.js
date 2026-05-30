@@ -19,5 +19,14 @@ export default function App() {
             });
         }
     };
-    return (_jsxs("div", { className: "flex flex-col h-screen bg-amber-50 overflow-hidden", children: [_jsx(Header, { onNotif: handleNotif }), _jsxs("main", { className: "flex-1 overflow-y-auto overflow-x-hidden scroll-smooth", style: { WebkitOverflowScrolling: 'touch' }, children: [_jsx("div", { className: tab === 'events' ? 'block animate-[fadeUp_.25s_ease]' : 'hidden', children: _jsx(Events, {}) }), _jsx("div", { className: tab === 'causieu' ? 'block animate-[fadeUp_.25s_ease]' : 'hidden', children: _jsx(CauSieu, {}) }), _jsx("div", { className: tab === 'chat' ? 'flex flex-col h-full animate-[fadeUp_.25s_ease]' : 'hidden', children: _jsx(Chat, { onNavigate: t => setTab(t) }) }), _jsx("div", { className: tab === 'about' ? 'block animate-[fadeUp_.25s_ease]' : 'hidden', children: _jsx(About, {}) })] }), _jsx(BottomNav, { active: tab, onChange: t => { setTab(t); window.scrollTo(0, 0); } })] }));
+    const changeTab = (t) => {
+        setTab(t);
+        // scroll về đầu cho các tab cuộn dọc
+        if (t !== 'chat') {
+            setTimeout(() => {
+                document.getElementById('main-scroll')?.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 50);
+        }
+    };
+    return (_jsxs("div", { className: "flex flex-col bg-amber-50", style: { height: '100dvh' }, children: ["   ", _jsx(Header, { onNotif: handleNotif }), _jsxs("main", { id: "main-scroll", className: "flex-1 overflow-hidden relative", children: [_jsx("div", { className: `absolute inset-0 overflow-y-auto overflow-x-hidden ${tab === 'events' ? 'block' : 'hidden'}`, style: { WebkitOverflowScrolling: 'touch' }, children: _jsx("div", { className: "animate-[fadeUp_.25s_ease] pb-4", children: _jsx(Events, {}) }) }), _jsx("div", { className: `absolute inset-0 overflow-y-auto overflow-x-hidden ${tab === 'causieu' ? 'block' : 'hidden'}`, style: { WebkitOverflowScrolling: 'touch' }, children: _jsx("div", { className: "animate-[fadeUp_.25s_ease] pb-4", children: _jsx(CauSieu, {}) }) }), _jsx("div", { className: `absolute inset-0 flex flex-col ${tab === 'chat' ? 'flex' : 'hidden'}`, children: _jsx("div", { className: "animate-[fadeUp_.25s_ease] flex flex-col flex-1 overflow-hidden", children: _jsx(Chat, { onNavigate: t => changeTab(t) }) }) }), _jsx("div", { className: `absolute inset-0 overflow-y-auto overflow-x-hidden ${tab === 'about' ? 'block' : 'hidden'}`, style: { WebkitOverflowScrolling: 'touch' }, children: _jsx("div", { className: "animate-[fadeUp_.25s_ease] pb-4", children: _jsx(About, {}) }) })] }), _jsx(BottomNav, { active: tab, onChange: changeTab })] }));
 }

@@ -23,6 +23,9 @@ const FLOW: Flow = {
 
 const now = () => new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'})
 
+// ── Bot avatar dùng logo thật ─────────────────────────────
+const BOT_AVATAR = '/thuan-chau-pagoda/logo.png'
+
 interface Props { onNavigate: (tab: string) => void }
 
 export default function Chat({ onNavigate }: Props) {
@@ -31,14 +34,15 @@ export default function Chat({ onNavigate }: Props) {
   const [typing, setTyping] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
 
-  const scrollBottom = () => setTimeout(()=>bottomRef.current?.scrollIntoView({behavior:'smooth'}),50)
+  const scrollBottom = () =>
+    setTimeout(() => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }), 50)
 
   const runStep = (key: string) => {
     const step = FLOW[key]
     if (!step) return
     if (step.action === 'start')       { runStep('start'); return }
     if (step.action === 'events_menu') { runStep('📅 Lịch sự kiện'); return }
-    if (step.action === 'maps')        { window.open('https://maps.google.com/?q=220+Đống+Đa,+Hải+Châu,+Đà+Nẵng','_blank') }
+    if (step.action === 'maps')        { window.open('https://maps.google.com/?q=220+Đống+Đa,+Hải+Châu,+Đà+Nẵng', '_blank') }
     if (step.action === 'causieu')     { onNavigate('causieu'); return }
     if (!step.msg) return
 
@@ -47,69 +51,94 @@ export default function Chat({ onNavigate }: Props) {
     scrollBottom()
     setTimeout(() => {
       setTyping(false)
-      setMsgs(m => [...m, { role:'bot', text:step.msg, time:now() }])
+      setMsgs(m => [...m, { role: 'bot', text: step.msg, time: now() }])
       setOptions(step.options)
       scrollBottom()
     }, 900)
   }
 
   const pick = (opt: string) => {
-    setMsgs(m => [...m, { role:'user', text:opt, time:now() }])
+    setMsgs(m => [...m, { role: 'user', text: opt, time: now() }])
     setOptions([])
     setTimeout(() => runStep(opt), 500)
   }
 
   useEffect(() => { runStep('start') }, [])
 
+  // ── Avatar component ──────────────────────────────────
+  const BotAvatar = () => (
+    <img
+      src={BOT_AVATAR}
+      alt="Chùa Thuận Châu"
+      className="w-8 h-8 rounded-full object-cover ring-2 ring-amber-400/50 flex-shrink-0 shadow-sm"
+    />
+  )
+
   return (
-    <div className="flex flex-col h-full">
-      {/* hero */}
-      <div className="relative bg-gradient-to-br from-[#1a4a2a] via-[#2d6a3f] to-[#1a4a2a] text-center py-6 px-4 overflow-hidden flex-shrink-0">
+    <div className="flex flex-col" style={{ height: '100%' }}>
+
+      {/* ── Hero ─────────────────────────────────────────── */}
+      <div
+        className="relative text-center py-5 px-4 overflow-hidden flex-shrink-0"
+        style={{ background: 'linear-gradient(135deg,#1a4a2a,#2d6a3f,#1a4a2a)' }}
+      >
         <div className="absolute inset-0 opacity-10"
-          style={{ backgroundImage:'repeating-linear-gradient(45deg,transparent,transparent 24px,rgba(200,151,58,.4) 24px,rgba(200,151,58,.4) 26px)' }}/>
-        <h2 className="font-['Cormorant_Garamond'] text-[22px] font-bold text-amber-200 relative">💬 Hỏi Đáp</h2>
-        <div className="w-16 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto my-2.5"/>
-        <p className="text-[12px] text-amber-200/70 italic relative">Trợ lý tự động của chùa</p>
+          style={{ backgroundImage: 'repeating-linear-gradient(45deg,transparent,transparent 24px,rgba(200,151,58,.4) 24px,rgba(200,151,58,.4) 26px)' }}/>
+        {/* mini logo + title */}
+        <div className="relative flex items-center justify-center gap-2.5">
+          <img src={BOT_AVATAR} alt="" className="w-8 h-8 rounded-full object-cover ring-2 ring-amber-400/60"/>
+          <h2 className="font-['Cormorant_Garamond'] text-[20px] font-bold text-amber-200">Hỏi Đáp</h2>
+        </div>
+        <div className="w-14 h-px mx-auto my-2" style={{ background: 'linear-gradient(90deg,transparent,#c8973a,transparent)' }}/>
+        <p className="text-[11.5px] italic" style={{ color: 'rgba(232,201,122,0.75)' }}>Trợ lý tự động của chùa</p>
       </div>
 
-      {/* messages */}
-      <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3 bg-amber-50/40">
+      {/* ── Messages ─────────────────────────────────────── */}
+      <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3 bg-amber-50/40"
+        style={{ overscrollBehavior: 'contain' }}>
+
         {msgs.map((m, i) => (
-          <div key={i} className={`flex gap-2.5 ${m.role==='user' ? 'justify-end' : 'items-end'}`}>
-            {m.role==='bot' && (
-              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#3d1a00] to-orange-700 flex items-center justify-center text-[13px] flex-shrink-0 mb-0.5">☸</div>
-            )}
-            <div className={`flex flex-col gap-1 max-w-[78%] ${m.role==='user' ? 'items-end' : 'items-start'}`}>
-              <div className={`px-3.5 py-2.5 rounded-2xl text-[13.5px] leading-relaxed whitespace-pre-line ${
-                m.role==='bot'
-                  ? 'bg-white text-stone-800 shadow-sm border border-amber-100 rounded-bl-sm'
-                  : 'bg-gradient-to-br from-[#6b2d00] to-[#3d1a00] text-amber-100 rounded-br-sm'
-              }`}>{m.text}</div>
+          <div key={i} className={`flex gap-2.5 ${m.role === 'user' ? 'justify-end' : 'items-end'}`}>
+
+            {/* bot avatar */}
+            {m.role === 'bot' && <BotAvatar />}
+
+            <div className={`flex flex-col gap-1 max-w-[78%] ${m.role === 'user' ? 'items-end' : 'items-start'}`}>
+              <div className={`px-3.5 py-2.5 rounded-2xl text-[13.5px] leading-relaxed whitespace-pre-line shadow-sm ${
+                m.role === 'bot'
+                  ? 'bg-white text-stone-800 border border-amber-100/80 rounded-bl-sm'
+                  : 'text-amber-50 rounded-br-sm'
+              }`}
+              style={m.role === 'user' ? { background: 'linear-gradient(135deg,#2d6a3f,#1a4a2a)' } : {}}>
+                {m.text}
+              </div>
               <span className="text-[10px] text-stone-400 px-1">{m.time}</span>
             </div>
           </div>
         ))}
 
+        {/* typing indicator */}
         {typing && (
           <div className="flex gap-2.5 items-end">
-            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#3d1a00] to-orange-700 flex items-center justify-center text-[13px] flex-shrink-0">☸</div>
+            <BotAvatar />
             <div className="bg-white px-4 py-3 rounded-2xl rounded-bl-sm shadow-sm border border-amber-100 flex gap-1.5 items-center">
-              {[0,1,2].map(i=>(
-                <div key={i} className="w-2 h-2 rounded-full bg-stone-400 animate-bounce"
-                  style={{animationDelay:`${i*0.15}s`}}/>
+              {[0, 1, 2].map(i => (
+                <div key={i} className="w-2 h-2 rounded-full bg-stone-300 animate-bounce"
+                  style={{ animationDelay: `${i * 0.15}s` }}/>
               ))}
             </div>
           </div>
         )}
-        <div ref={bottomRef}/>
+
+        <div ref={bottomRef} />
       </div>
 
-      {/* options */}
+      {/* ── Option buttons ────────────────────────────────── */}
       {options.length > 0 && (
         <div className="flex flex-wrap gap-2 px-4 py-3 bg-white border-t border-amber-100 flex-shrink-0">
           {options.map(o => (
-            <button key={o} onClick={()=>pick(o)}
-              className="px-4 py-2 border-2 border-amber-300 bg-amber-50 text-[#3d1a00] rounded-full text-[12.5px] font-medium hover:bg-amber-100 active:scale-95 transition-all whitespace-nowrap">
+            <button key={o} onClick={() => pick(o)}
+              className="px-4 py-2 border-2 border-amber-300 bg-amber-50 text-[#1a4a2a] rounded-full text-[12.5px] font-semibold hover:bg-amber-100 active:scale-95 transition-all whitespace-nowrap">
               {o}
             </button>
           ))}
