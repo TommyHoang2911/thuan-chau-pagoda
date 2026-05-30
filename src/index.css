@@ -21,3 +21,28 @@ html, body, #root {
 }
 
 * { -webkit-tap-highlight-color: transparent; }
+
+/* ── iOS Safe Area Fix ─────────────────────────────────── */
+/* Phải dùng CSS, không dùng inline style — Safari iOS yêu cầu */
+
+/* Root app height: dùng -webkit-fill-available cho Safari */
+#root {
+  height: 100%;
+  height: -webkit-fill-available;
+}
+
+html {
+  height: -webkit-fill-available;
+}
+
+/* Bottom nav: padding đúng cho iPhone home indicator */
+.bottom-nav-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-bottom: max(env(safe-area-inset-bottom), 0px);
+}
+
+/* Top header: padding cho notch / dynamic island */
+.header-safe {
+  padding-top: env(safe-area-inset-top);
+  padding-top: max(env(safe-area-inset-top), 0px);
+}
