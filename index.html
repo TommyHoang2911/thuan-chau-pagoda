@@ -728,7 +728,7 @@ function renumber() {
   document.querySelectorAll('.name-entry').forEach((e,i)=> e.querySelector('.name-num').textContent=i+1);
   nameCount = document.querySelectorAll('.name-entry').length;
 }
-function submitForm() {
+async function submitForm() {
   const name = document.getElementById('fName').value.trim();
   const phone = document.getElementById('fPhone').value.trim();
   const ceremony = document.getElementById('fCeremony').value;
@@ -738,8 +738,16 @@ function submitForm() {
   if (!ceremony) { showToast('Vui lòng chọn buổi lễ'); return; }
   if (!names.length) { showToast('Vui lòng nhập ít nhất một hương linh'); return; }
 
-  // TODO: save to Firestore
-  // addDoc(collection(db, "cauSieu"), { name, phone, ceremony, names, ts: serverTimestamp() });
+  // Save to Firestore via Firebase module
+  if (window._firebaseSaveCauSieu) {
+    try {
+      await window._firebaseSaveCauSieu({
+        name, phone, ceremony, names,
+        relation: document.getElementById('fRelation').value,
+        note: document.getElementById('fNote').value
+      });
+    } catch(e) { console.warn('Firestore save failed:', e); }
+  }
 
   document.getElementById('formWrap').style.display='none';
   document.getElementById('successCard').classList.add('show');
@@ -844,7 +852,7 @@ async function requestNotifPermission() {
   if (perm === 'granted') {
     document.getElementById('notifDot').classList.add('show');
     showToast('✅ Đã bật thông báo sự kiện!');
-    // TODO: subscribe FCM token here
+    if (window._firebaseSubscribePush) window._firebaseSubscribePush();
     new Notification('Chùa Thuận Châu 🙏', { body:'Bạn sẽ nhận thông báo sự kiện từ chùa.', icon:'icon-192.png' });
   } else {
     showToast('Chưa cấp quyền thông báo');
@@ -862,6 +870,68 @@ function showToast(msg) {
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js').catch(()=>{});
 }
+</script>
+
+<!-- ── FIREBASE INTEGRATION (ES module) ──────────────────── -->
+<script type="module">
+import { loadEvents, saveCauSieu, subscribePush, onForegroundMessage } from './firebase-config.js';
+
+// ── Load events from Firestore (replace mock data if available) ──
+async function initEvents() {
+  try {
+    const fsEvents = await loadEvents();
+    if (fsEvents.length > 0) {
+      // Map Firestore fields to UI fields
+      const mapped = fsEvents.map(e => ({
+        id: e.id,
+        emoji: e.emoji || '🪷',
+        badge: e.badge || 'Sự kiện',
+        day: e.day || '',
+        month: e.month || '',
+        time: e.time || '',
+        title: e.title || '',
+        desc: e.desc || '',
+        loc: e.loc || 'Chánh Điện'
+      }));
+      // Re-render with Firestore data
+      const list = document.getElementById('eventsList');
+      list.innerHTML = mapped.map(e => `
+        <div class="event-card">
+          <div class="event-img">
+            <span>${e.emoji}</span>
+            <span class="event-badge">${e.badge}</span>
+          </div>
+          <div class="event-body">
+            <div class="event-meta">
+              <span class="event-date">${e.day} ${e.month}</span>
+              <span class="event-time">⏰ ${e.time}</span>
+            </div>
+            <div class="event-title">${e.title}</div>
+            <div class="event-desc">${e.desc}</div>
+          </div>
+          <div class="event-footer">
+            <span class="event-loc">📍 ${e.loc}</span>
+          </div>
+        </div>`).join('');
+    }
+    // else: keep mock data already rendered
+  } catch(e) {
+    console.warn('Firestore events load failed, using mock data:', e);
+  }
+}
+initEvents();
+
+// ── Wire up form submit to Firestore ──────────────────────
+window._firebaseSaveCauSieu = saveCauSieu;
+
+// ── Wire up push subscription ─────────────────────────────
+window._firebaseSubscribePush = subscribePush;
+
+// ── Foreground push messages → toast ─────────────────────
+onForegroundMessage(payload => {
+  const body = payload?.notification?.body || 'Có thông báo mới từ chùa';
+  showToast('🔔 ' + body);
+});
 </script>
 </body>
 </html>
