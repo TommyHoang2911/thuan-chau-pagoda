@@ -1,0 +1,15 @@
+# Env / secrets
+.env
+.env.*
+*.local
+
+# Never commit injected config
+firebase-config.injected.js
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/

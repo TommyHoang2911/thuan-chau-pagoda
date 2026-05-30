@@ -1,4 +1,6 @@
 // ── Firebase Config – Chùa Thuận Châu ─────────────────────
+// ⚠️  Placeholders below are injected by GitHub Actions at build time.
+//     Do NOT hardcode real values here.
 import { initializeApp }       from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore,
          collection, addDoc, getDocs,
@@ -8,58 +10,45 @@ import { getMessaging,
          getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging.js";
 
 const firebaseConfig = {
-  apiKey:            "AIzaSyAJjxrUWZfgsRNrojxDL63UN8AGO6MiOJc",
-  authDomain:        "thuan-chau.firebaseapp.com",
-  projectId:         "thuan-chau",
-  storageBucket:     "thuan-chau.firebasestorage.app",
-  messagingSenderId: "262992171979",
-  appId:             "1:262992171979:web:485f8d0a13dee49efcdc4e",
-  measurementId:     "G-6VPBMC8P3N"
+  apiKey:            "__FIREBASE_API_KEY__",
+  authDomain:        "__FIREBASE_AUTH_DOMAIN__",
+  projectId:         "__FIREBASE_PROJECT_ID__",
+  storageBucket:     "__FIREBASE_STORAGE_BUCKET__",
+  messagingSenderId: "__FIREBASE_MESSAGING_SENDER_ID__",
+  appId:             "__FIREBASE_APP_ID__",
+  measurementId:     "__FIREBASE_MEASUREMENT_ID__"
 };
 
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
 
-// ── Messaging (optional – only works with VAPID key) ───────
 let messaging = null;
-try {
-  messaging = getMessaging(app);
-} catch(e) { /* Safari / non-HTTPS skip */ }
+try { messaging = getMessaging(app); } catch(e) {}
 
-// ── VAPID key (Firebase Console → Project Settings → Cloud Messaging → Web Push) ──
-const VAPID_KEY = "YOUR_VAPID_KEY"; // thay bằng key thật sau
+const VAPID_KEY = "__FIREBASE_VAPID_KEY__";
 
-// ── Subscribe push ─────────────────────────────────────────
 export async function subscribePush() {
   if (!messaging) return;
   try {
     const token = await getToken(messaging, { vapidKey: VAPID_KEY });
-    if (token) {
-      await addDoc(collection(db, "fcmTokens"), { token, ts: serverTimestamp() });
-    }
+    if (token) await addDoc(collection(db, "fcmTokens"), { token, ts: serverTimestamp() });
     return token;
   } catch(e) { console.warn("Push subscription failed:", e); }
 }
 
-// ── Foreground messages ────────────────────────────────────
 export function onForegroundMessage(cb) {
   if (!messaging) return;
   onMessage(messaging, cb);
 }
 
-// ── Load events từ Firestore ───────────────────────────────
 export async function loadEvents() {
   try {
     const q = query(collection(db, "events"), orderBy("date", "asc"));
     const snap = await getDocs(q);
     return snap.docs.map(d => ({ id: d.id, ...d.data() }));
-  } catch(e) {
-    console.warn("loadEvents failed:", e);
-    return [];
-  }
+  } catch(e) { console.warn("loadEvents failed:", e); return []; }
 }
 
-// ── Lưu đăng ký cầu siêu ──────────────────────────────────
 export async function saveCauSieu({ name, phone, ceremony, names, relation, note }) {
   return addDoc(collection(db, "cauSieu"), {
     name, phone, ceremony, names, relation, note,
