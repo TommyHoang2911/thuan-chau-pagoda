@@ -35,7 +35,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build (Vite + inject Firebase secrets as VITE_ env vars)
+      - name: Build (Vite injects VITE_ env vars into both index + admin bundle)
         env:
           VITE_FIREBASE_API_KEY:             ${{ secrets.FIREBASE_API_KEY }}
           VITE_FIREBASE_AUTH_DOMAIN:         ${{ secrets.FIREBASE_AUTH_DOMAIN }}
@@ -44,17 +44,6 @@ jobs:
           VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}
           VITE_FIREBASE_APP_ID:              ${{ secrets.FIREBASE_APP_ID }}
         run: npm run build
-
-      - name: Copy admin.html to dist (keep old admin)
-        run: |
-          # inject secrets into admin.html then copy
-          cp admin.html dist/admin.html
-          sed -i "s|__FIREBASE_API_KEY__|${{ secrets.FIREBASE_API_KEY }}|g"                         dist/admin.html
-          sed -i "s|__FIREBASE_AUTH_DOMAIN__|${{ secrets.FIREBASE_AUTH_DOMAIN }}|g"                 dist/admin.html
-          sed -i "s|__FIREBASE_PROJECT_ID__|${{ secrets.FIREBASE_PROJECT_ID }}|g"                   dist/admin.html
-          sed -i "s|__FIREBASE_STORAGE_BUCKET__|${{ secrets.FIREBASE_STORAGE_BUCKET }}|g"           dist/admin.html
-          sed -i "s|__FIREBASE_MESSAGING_SENDER_ID__|${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}|g" dist/admin.html
-          sed -i "s|__FIREBASE_APP_ID__|${{ secrets.FIREBASE_APP_ID }}|g"                           dist/admin.html
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
