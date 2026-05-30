@@ -60,7 +60,7 @@ function WelcomeCard() {
   return (
     <div className="rounded-2xl overflow-hidden shadow-sm"
       style={{ border: '1px solid #e8e8e8', background: '#fff', maxWidth: 260 }}>
-      <img src="/thuan-chau-pagoda/banner.png" alt="Chùa Thuận Châu"
+      <img src="/thuan-chau-pagoda/banner.jpg" alt="Chùa Thuận Châu"
         className="w-full object-cover" style={{ height: 110 }}/>
       <div className="p-3">
         <div className="flex items-center gap-2 mb-2">

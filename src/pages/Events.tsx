@@ -26,7 +26,7 @@ export default function Events() {
       {/* hero banner */}
       <div className="relative overflow-hidden" style={{background:'#1a4a2a'}}>
         <img
-          src="/thuan-chau-pagoda/banner.png"
+          src="/thuan-chau-pagoda/banner.jpg"
           alt="Chùa Thuận Châu"
           className="w-full object-cover"
           style={{maxHeight:'180px', objectPosition:'center'}}
